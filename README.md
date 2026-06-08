@@ -1,3 +1,11 @@
 # TransDep Eticket lib usage sample
 
-Using transdep-eticket-lib for providing API
+Using transdep-eticket-lib for providing API.
+
+use default mvn commands
+`mvn clean` etc
+
+
+```sh
+SPRING_PROFILES_ACTIVE=dev mvn -pl dbs-globesend-test -am spring-boot:run -Dspring-boot.run.arguments="--logging.level.root=DEBUG"
+```

@@ -6,7 +6,7 @@
   <groupId>com.transdep.eticket</groupId>
   <artifactId>transdep-eticket-sample</artifactId>
   <version>1.0.0</version>
-  <packaging>war</packaging>
+  <packaging>pom</packaging>
 
   <modules>
     <module>transdep-eticket-lib</module>
