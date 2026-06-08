@@ -1,0 +1,3 @@
+[submodule "transdep-eticket-lib"]
+	path = transdep-eticket-lib
+	url = git@github.com:ganoch/transdep-eticket.git
