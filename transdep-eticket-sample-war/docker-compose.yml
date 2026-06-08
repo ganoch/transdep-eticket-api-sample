@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  app:
+    image: eclipse-temurin:8-jre
+    container_name: transdep-eticket-api-sample
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536
+    volumes:
+      - ./target/transdep-eticket-api-sample.war:/app/transdep-eticket-api-sample.war:ro
+      - ./logs:/app/logs
+    working_dir: /app
+    environment:
+      TZ: Asia/Ulaanbaatar
+    command: java -Xms256m -Xmx512m -jar transdep-eticket-api-sample.war --spring.profiles.active=test
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+    networks:
+      - transdep-net
+
+  app-dev:
+    image: maven:3.8-openjdk-8
+    container_name: transdep-eticket-api-sample-dev
+    volumes:
+      - .:/workspace
+      - ~/.m2:/root/.m2
+    working_dir: /workspace
+    environment:
+      SPRING_PROFILES_ACTIVE: dev4
+      TZ: Asia/Ulaanbaatar
+    command: mvn -pl transdep-eticket-sample-war -am spring-boot:run -Dspring-boot.run.arguments="--logging.level.root=DEBUG"
+    ports:
+      - "8081:8080"
+    networks:
+      - transdep-net
+    stdin_open: true
+    tty: true
+
+networks:
+  transdep-net:
+    driver: bridge

@@ -1,6 +1,7 @@
 package com.transdep.eticket.sample;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.slf4j.Logger;
@@ -14,5 +15,12 @@ public class Controller {
 
   @Autowired
   public Controller() {
+  }
+
+
+  @PostMapping("/home")
+  public String home() {
+    logger.info("Received request at /home endpoint");
+    return "Hello, World!";
   }
 }
