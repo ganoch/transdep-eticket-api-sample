@@ -7,5 +7,5 @@ use default mvn commands
 
 
 ```sh
-SPRING_PROFILES_ACTIVE=dev mvn -pl transdep-eticket-sample -am spring-boot:run -Dspring-boot.run.arguments="--logging.level.root=DEBUG"
+SPRING_PROFILES_ACTIVE=dev mvn -pl transdep-eticket-sample-war -am spring-boot:run -Dspring-boot.run.arguments="--logging.level.root=DEBUG"
 ```
