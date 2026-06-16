@@ -94,4 +94,16 @@ public class Controller {
     logger.info("Received request at /setDeparture endpoint");
     return response;
   }
+
+  @PostMapping("/setTrip")
+  public Map<String, Object> setTrip(@RequestBody Map<String, Object> payload) throws Exception {
+    this.transDepEticketService.setDeparture((String)payload.get("departure").toString());
+    this.transDepEticketService.setStop((String)payload.get("stop").toString());
+    this.transDepEticketService.setDestination((String)payload.get("destination").toString());
+    this.transDepEticketService.setDispatcherId((String)payload.get("trip").toString());
+
+    return this.transDepEticketService.fetchSeatsData();
+  }
+
+
 }
