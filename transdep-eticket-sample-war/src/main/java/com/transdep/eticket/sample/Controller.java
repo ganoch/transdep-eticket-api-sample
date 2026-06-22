@@ -43,53 +43,49 @@ public class Controller {
     return response;
   }
 
-
-
   @PostMapping("/setDeparture")
-  public Map<String, List<Map<String, String>>> setDeparture(@RequestBody Map<String, Object> payload) throws Exception {
-    this.transDepEticketService.setDeparture((String)payload.get("departure").toString());
-
+  public Map<String, List<Map<String, String>>> setDeparture(@RequestBody Map<String, Object> payload)
+      throws Exception {
+    this.transDepEticketService.setDeparture((String) payload.get("departure").toString());
 
     List<Map<String, String>> destinations = this.transDepEticketService.fetchDestinations();
     List<Map<String, String>> stops = this.transDepEticketService.fetchStops();
 
     Map<String, List<Map<String, String>>> response = new HashMap<>();
-    response.put("departures", stops.isEmpty() ? destinations: null);
+    response.put("departures", stops.isEmpty() ? destinations : null);
     response.put("stops", stops);
-
 
     logger.info("Received request at /setDeparture endpoint");
     return response;
   }
 
-   @PostMapping("/setStop")
+  @PostMapping("/setStop")
   public Map<String, List<Map<String, String>>> setStop(@RequestBody Map<String, Object> payload) throws Exception {
-    this.transDepEticketService.setDeparture((String)payload.get("departure").toString());
-    this.transDepEticketService.setStop((String)payload.get("stop").toString());
-
+    this.transDepEticketService.setDeparture((String) payload.get("departure").toString());
+    this.transDepEticketService.setStop((String) payload.get("stop").toString());
 
     List<Map<String, String>> destinations = this.transDepEticketService.fetchDestinations();
 
     Map<String, List<Map<String, String>>> response = new HashMap<>();
     response.put("destinations", destinations);
 
-
     logger.info("Received request at /setDeparture endpoint");
     return response;
   }
 
   @PostMapping("/setDestination")
-  public Map<String, List<Map<String, String>>> setDestination(@RequestBody Map<String, Object> payload) throws Exception {
-    this.transDepEticketService.setDeparture((String)payload.get("departure").toString());
-    this.transDepEticketService.setStop((String)payload.get("stop").toString());
-    this.transDepEticketService.setDestination((String)payload.get("destination").toString());
-
+  public Map<String, List<Map<String, String>>> setDestination(@RequestBody Map<String, Object> payload)
+      throws Exception {
+    this.transDepEticketService.setDeparture((String) payload.get("departure").toString());
+    if (payload.containsKey("stop") && !((String) payload.get("stop").toString()).isEmpty()) {
+      this.transDepEticketService.setStop((String) payload.get("stop").toString());
+    }
+    this.transDepEticketService.setDestination((String) payload.get("destination").toString());
 
     List<Map<String, String>> trips = this.transDepEticketService.fetchTrips();
 
     Map<String, List<Map<String, String>>> response = new HashMap<>();
     response.put("trips", trips);
-
 
     logger.info("Received request at /setDeparture endpoint");
     return response;
@@ -97,13 +93,12 @@ public class Controller {
 
   @PostMapping("/setTrip")
   public Map<String, Object> setTrip(@RequestBody Map<String, Object> payload) throws Exception {
-    this.transDepEticketService.setDeparture((String)payload.get("departure").toString());
-    this.transDepEticketService.setStop((String)payload.get("stop").toString());
-    this.transDepEticketService.setDestination((String)payload.get("destination").toString());
-    this.transDepEticketService.setDispatcherId((String)payload.get("trip").toString());
+    this.transDepEticketService.setDeparture((String) payload.get("departure").toString());
+    this.transDepEticketService.setStop((String) payload.get("stop").toString());
+    this.transDepEticketService.setDestination((String) payload.get("destination").toString());
+    this.transDepEticketService.setDispatcherId((String) payload.get("trip").toString());
 
     return this.transDepEticketService.fetchSeatsData();
   }
-
 
 }
