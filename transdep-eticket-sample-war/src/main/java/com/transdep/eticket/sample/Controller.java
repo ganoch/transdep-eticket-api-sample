@@ -1,5 +1,6 @@
 package com.transdep.eticket.sample;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.transdep.eticket.Customer;
+import com.transdep.eticket.Passenger;
 import com.transdep.eticket.TransDepEticket;
 
 @RestController
@@ -99,6 +102,40 @@ public class Controller {
     this.transDepEticketService.setDispatcherId((String) payload.get("trip").toString());
 
     return this.transDepEticketService.fetchSeatsData();
+  }
+
+  @PostMapping("/requestSeats")
+  public Map<String, Object> requestSeats(@RequestBody Map<String, Object> payload) throws Exception {
+    this.transDepEticketService.setDeparture((String) payload.get("departure").toString());
+    this.transDepEticketService.setStop((String) payload.get("stop").toString());
+    this.transDepEticketService.setDestination((String) payload.get("destination").toString());
+    this.transDepEticketService.setDispatcherId((String) payload.get("trip").toString());
+
+    @SuppressWarnings("unchecked")
+    List<Map<String, Object>> passengerMaps = (List<Map<String, Object>>) payload.get("passangers");
+    List<Passenger> passengers = new ArrayList<>();
+    for (Map<String, Object> passengerMap : passengerMaps) {
+      Passenger passenger = new Passenger();
+      passenger.setRegistryNum(passengerMap.get("registryNum") != null ? passengerMap.get("registryNum").toString() : null);
+      passenger.setName(passengerMap.get("name") != null ? passengerMap.get("name").toString() : null);
+      passenger.setInsurance(passengerMap.get("insurance") != null
+          ? Integer.valueOf(passengerMap.get("insurance").toString())
+          : 0);
+      passenger.setSeat(passengerMap.get("seat") != null ? passengerMap.get("seat").toString() : null);
+      passengers.add(passenger);
+    }
+
+    @SuppressWarnings("unchecked")
+    Map<String, Object> billTo = (Map<String, Object>) payload.get("billTo");
+
+    Customer customer = new Customer();
+    customer.setName(billTo.get("name") != null ? billTo.get("name").toString() : null);
+    customer.setPhoneNum(billTo.get("phoneNum") != null ? billTo.get("phoneNum").toString() : null);
+    customer.setEmail(billTo.get("email") != null ? billTo.get("email").toString() : null);
+    customer.setCompanyReg(billTo.get("companyReg") != null ? billTo.get("companyReg").toString() : null);
+
+    logger.info("Received request at /requestSeats endpoint");
+    return this.transDepEticketService.requestSeats(passengers, customer);
   }
 
 }
